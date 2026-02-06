@@ -1,0 +1,82 @@
+{
+  "status": "success",
+  "response": {
+    "detail": [
+      {
+        "value": {
+          "numberValue": 188,
+          "key": null,
+          "fallback": "188 cm"
+        },
+        "title": "Height",
+        "translationKey": "height_sentencecase"
+      },
+      {
+        "value": {
+          "numberValue": 33,
+          "options": {},
+          "key": null,
+          "fallback": 33
+        },
+        "title": "Shirt",
+        "translationKey": "shirt"
+      },
+      {
+        "value": {
+          "numberValue": 23,
+          "options": {
+            "style": "unit",
+            "unit": "year",
+            "unitDisplay": "long"
+          },
+          "key": null,
+          "fallback": "23"
+        },
+        "title": "Age",
+        "translationKey": "age_sentencecase"
+      },
+      {
+        "value": {
+          "key": "left",
+          "fallback": "Left"
+        },
+        "title": "Preferred foot",
+        "translationKey": "preferred_foot"
+      },
+      {
+        "value": {
+          "key": null,
+          "fallback": "Italy"
+        },
+        "title": "Country",
+        "translationKey": "country_sentencecase",
+        "icon": {
+          "type": "country",
+          "id": "ITA"
+        },
+        "countryCode": "ITA"
+      },
+      {
+        "value": {
+          "numberValue": 52782489,
+          "key": null,
+          "fallback": "€52.8M"
+        },
+        "title": "Market value",
+        "translationKey": "transfer_value"
+      },
+      {
+        "value": {
+          "dateValue": "/Date(1877472000000+0000)/",
+          "key": null,
+          "fallback": {
+            "utcTime": "2029-06-30T00:00:00.000Z",
+            "timezone": "UTC"
+          }
+        },
+        "title": "Contract end",
+        "translationKey": "contract_end"
+      }
+    ]
+  }
+}

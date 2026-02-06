@@ -1,0 +1,108 @@
+{
+  "status": "success",
+  "response": {
+    "details": {
+      "id": 9825,
+      "type": "team",
+      "name": "Arsenal",
+      "latestSeason": "2025/2026",
+      "shortName": "Arsenal",
+      "country": "ENG",
+      "gender": "male",
+      "faqJSONLD": {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "When is Arsenal's next match?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Arsenal's next match is at 15:00 GMT on Sat, 7 Feb 2026 against Sunderland."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where is Arsenal's stadium?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Arsenal stadium is located in London and is called Emirates Stadium."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the capacity of Emirates Stadium?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The capacity for Emirates Stadium is 60383."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When was Emirates Stadium opened?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Emirates Stadium opened in 2006."
+            }
+          }
+        ]
+      },
+      "sportsTeamJSONLD": {
+        "@context": "https://schema.org",
+        "@type": "SportsTeam",
+        "name": "Arsenal",
+        "sport": "Football/Soccer",
+        "gender": "https://schema.org/Male",
+        "logo": "https://images.fotmob.com/image_resources/logo/teamlogo/9825.png",
+        "url": "https://www.fotmob.com/teams/9825/overview/arsenal",
+        "athlete": [],
+        "location": {
+          "@type": "Place",
+          "name": "Emirates Stadium",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "England",
+            "addressLocality": "London"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "51.555074614",
+            "longitude": "-0.108457804"
+          }
+        },
+        "memberOf": {
+          "@type": "SportsOrganization",
+          "name": "Premier League",
+          "url": "https://www.fotmob.com/leagues/47/overview/premier-league"
+        }
+      },
+      "breadcrumbJSONLD": {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.fotmob.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Premier League",
+            "item": "https://www.fotmob.com/leagues/47/overview/premier-league"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Arsenal",
+            "item": "https://www.fotmob.com/teams/9825/overview/arsenal"
+          }
+        ]
+      },
+      "canSyncCalendar": true,
+      "primaryLeagueId": 47,
+      "primaryLeagueName": "Premier League"
+    }
+  }
+}

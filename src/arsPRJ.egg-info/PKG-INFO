@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: arsPRJ
+Version: 0.1.0
+Summary: Arsenal data ETL
+Requires-Python: >=3.9
+Requires-Dist: requests
+Requires-Dist: pandas
+Requires-Dist: psycopg2-binary
+Requires-Dist: python-dotenv
