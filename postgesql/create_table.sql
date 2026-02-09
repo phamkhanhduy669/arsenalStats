@@ -27,5 +27,6 @@ CREATE TABLE IF NOT EXISTS arsenal_stats.coach (
     dateOfBirth DATE,
     cnation VARCHAR(30) NOT NULL,
     nation VARCHAR(30) NOT NULL,
+    height_cm INT,
     updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
