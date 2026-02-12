@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS arsenal_stats.players (
     assists INT,
     rcards INT,
     ycards INT,
-    transferValue INT
+    transferValue INT,
+    updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE IF NOT EXISTS arsenal_stats.coach (
     id INT PRIMARY KEY,
@@ -28,5 +29,16 @@ CREATE TABLE IF NOT EXISTS arsenal_stats.coach (
     cnation VARCHAR(30) NOT NULL,
     nation VARCHAR(30) NOT NULL,
     height_cm INT,
+    updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS arsenal_stats.match (
+    match_id INT PRIMARY KEY,
+    leauge VARCHAR(50) NOT NULL,
+    round VARCHAR(50) NOT NULL,
+    home_team VARCHAR(50) NOT NULL,
+    away_team VARCHAR(50) NOT NULL,
+    start_timestamp BIGINT NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    status VARCHAR(20) DEFAULT 'notstarted',
     updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

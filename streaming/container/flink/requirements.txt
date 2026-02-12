@@ -1,0 +1,5 @@
+apache-flink==1.17.0
+kafka-python
+python-dotenv
+jinja2
+psycopg2-binary
