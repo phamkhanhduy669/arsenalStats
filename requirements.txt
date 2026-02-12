@@ -2,3 +2,6 @@ requests
 pandas
 psycopg2-binary
 python-dotenv
+apache-flink
+jinja2
+kafka-python

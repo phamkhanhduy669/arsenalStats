@@ -1,0 +1,17 @@
+LICENSE
+pyproject.toml
+batching/code/arsPRJ.egg-info/PKG-INFO
+batching/code/arsPRJ.egg-info/SOURCES.txt
+batching/code/arsPRJ.egg-info/dependency_links.txt
+batching/code/arsPRJ.egg-info/requires.txt
+batching/code/arsPRJ.egg-info/top_level.txt
+batching/code/arsPRJ/__init__.py
+batching/code/arsPRJ/data_etl.py
+batching/code/arsPRJ.egg-info/PKG-INFO
+batching/code/arsPRJ.egg-info/SOURCES.txt
+batching/code/arsPRJ.egg-info/dependency_links.txt
+batching/code/arsPRJ.egg-info/requires.txt
+batching/code/arsPRJ.egg-info/top_level.txt
+batching/code/arsPRJ/utils/__init__.py
+batching/code/arsPRJ/utils/db_config.py
+batching/code/arsPRJ/utils/db_connection.py

@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = {"" = "batching/code"}
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["batching/code"]
