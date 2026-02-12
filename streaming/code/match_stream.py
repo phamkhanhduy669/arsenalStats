@@ -12,7 +12,7 @@ load_dotenv()
 
 REQUIRED_JARS = [
     "file:///opt/flink/flink-sql-connector-kafka-1.17.0.jar",
-    "file:///opt/flink/flink-connector-jdbc-3.0.0-1.16.jar",
+    "file:///opt/flink/flink-connector-jdbc-3.1.0-1.17.jar",
     "file:///opt/flink/postgresql-42.6.0.jar",
 ]
 
