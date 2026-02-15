@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS arsenal_stats.players (
     assists INT,
     rcards INT,
     ycards INT,
-    transferValue INT
+    transferValue INT,
+    updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE IF NOT EXISTS arsenal_stats.coach (
     id INT PRIMARY KEY,
@@ -29,4 +30,44 @@ CREATE TABLE IF NOT EXISTS arsenal_stats.coach (
     nation VARCHAR(30) NOT NULL,
     height_cm INT,
     updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS arsenal_stats.match (
+    match_id INT PRIMARY KEY,
+    leauge VARCHAR(50) NOT NULL,
+    round VARCHAR(50) NOT NULL,
+    home_team VARCHAR(50) NOT NULL,
+    away_team VARCHAR(50) NOT NULL,
+    start_timestamp BIGINT NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    status VARCHAR(20) DEFAULT 'notstarted',
+    updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS arsenal_stats.arsenal_match_stats (
+    match_id INT,
+    home_possession INT,
+    away_possession INT,
+    home_bigChanceCreated INT,
+    away_bigChanceCreated INT,
+    home_totalShots INT,
+    away_totalShots INT,
+    home_shotsOnTarget INT,
+    away_shotsOnTarget INT,
+    home_goalkeeperSaves INT,
+    away_goalkeeperSaves INT,
+    home_passes INT,
+    away_passes INT,
+    home_corners INT,
+    away_corners INT,
+    home_fouls INT,
+    away_fouls INT,
+    home_totalTackles INT,
+    away_totalTackles INT,
+    home_freeKicks INT,
+    away_freeKicks INT,
+    home_yellowCards INT,
+    away_yellowCards INT,
+    home_redCards INT,
+    away_redCards INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (match_id, updated_at)
 );

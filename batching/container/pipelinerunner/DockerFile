@@ -1,0 +1,28 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y cron && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY batching/code /app/batching/code
+
+COPY batching/schedule/crontab /etc/cron.d/arsprj-cron
+
+COPY batching/container/pipelinerunner/entrypoint.sh /app/entrypoint.sh
+
+RUN sed -i 's/\r$//' /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
+
+RUN chmod 0644 /etc/cron.d/arsprj-cron && \
+    sed -i '/^$/d' /etc/cron.d/arsprj-cron && \
+    crontab /etc/cron.d/arsprj-cron
+
+RUN touch /var/log/cron.log
+
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+CMD ["cron", "-f"]

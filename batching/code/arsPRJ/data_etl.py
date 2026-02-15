@@ -46,8 +46,9 @@ def parse_players_data(squad_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]
     parsed_data = []
     for member in squad_data:
         title = member.get('title', '').lower()
-        member_data = fallent_squad_data(member.get('members')[0], title)
-        parsed_data.append(member_data)
+        for individual_member in member.get('members', []):
+            member_data = fallent_squad_data(individual_member, title)
+            parsed_data.append(member_data)
     return parsed_data
 
 def get_squad_data() -> Dict[str, Any]:

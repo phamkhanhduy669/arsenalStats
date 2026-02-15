@@ -1,0 +1,130 @@
+{
+  "Pid": "2773",
+  "Pnm": "Arsenal",
+  "Conm": "England",
+  "Img": "enet/9825.png",
+  "firstColor": "EF0107",
+  "secondColor": "FDFDFD",
+  "Feed": {
+    "Id": "pr:2773",
+    "Items": [
+      "pr:2773-a:1770464198880",
+      "pr:2773-a:1770464010057",
+      "pr:2773-a:2826306",
+      "pr:2773-a:2826292",
+      "pr:2773-a:2826247"
+    ]
+  },
+  "statsGroup": [
+    {
+      "name": "ATTACKING",
+      "stats": [
+        {
+          "name": "Average ball possession",
+          "totalValue": "57.5%",
+          "rank": 3
+        },
+        {
+          "name": "Goals scored",
+          "totalValue": "46",
+          "pgValue": "1.9",
+          "rank": 2
+        },
+        {
+          "name": "Goals by foot",
+          "totalValue": "31",
+          "pgValue": "1.2",
+          "rank": 6
+        },
+        {
+          "name": "Goals by head",
+          "totalValue": "10",
+          "pgValue": "0.41",
+          "rank": 1
+        },
+        {
+          "name": "Penalties Missed",
+          "totalValue": "0",
+          "pgValue": "0",
+          "rank": 10
+        },
+        {
+          "name": "Shots",
+          "totalValue": "254",
+          "pgValue": "10.5",
+          "rank": 2
+        },
+        {
+          "name": "Shots on target",
+          "totalValue": "121",
+          "pgValue": "5",
+          "rank": 2
+        },
+        {
+          "name": "Shots off target",
+          "totalValue": "133",
+          "pgValue": "5.5",
+          "rank": 3
+        },
+        {
+          "name": "Offsides",
+          "totalValue": "37",
+          "pgValue": "1.5",
+          "rank": 12
+        },
+        {
+          "name": "Corner Kicks",
+          "totalValue": "148",
+          "pgValue": "6.1",
+          "rank": 2
+        },
+        {
+          "name": "Free Kicks",
+          "totalValue": "246",
+          "pgValue": "10.2",
+          "rank": 10
+        },
+        {
+          "name": "Hit woodwork",
+          "totalValue": "8",
+          "pgValue": "0.33",
+          "rank": 11
+        }
+      ]
+    },
+    {
+      "name": "DEFENDING",
+      "stats": [
+        {
+          "name": "Goals conceded",
+          "totalValue": "17",
+          "pgValue": "0.7",
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "name": "DISCIPLINE",
+      "stats": [
+        {
+          "name": "Red cards",
+          "totalValue": "0",
+          "pgValue": "0",
+          "rank": 15
+        },
+        {
+          "name": "Yellow cards",
+          "totalValue": "33",
+          "pgValue": "1.3",
+          "rank": 19
+        },
+        {
+          "name": "Total cards",
+          "totalValue": "33",
+          "pgValue": "1.3",
+          "rank": 19
+        }
+      ]
+    }
+  ]
+}

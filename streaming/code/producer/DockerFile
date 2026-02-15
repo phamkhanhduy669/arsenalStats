@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY streaming/code/producer/requirements.txt ./requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY batching/code /app/batching/code
+
+COPY streaming/code/producer/ /app/
+
+ENV PYTHONPATH=/app/batching/code
+
+CMD ["python", "match_producer.py"]
