@@ -6,14 +6,13 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 from dotenv import load_dotenv
 import os
-from typing import Any
 
 load_dotenv()
 
 REQUIRED_JARS = [
-    "file:///opt/flink/flink-sql-connector-kafka-1.17.0.jar",
-    "file:///opt/flink/flink-connector-jdbc-3.1.0-1.17.jar",
-    "file:///opt/flink/postgresql-42.6.0.jar",
+    "file:///opt/flink/lib/flink-sql-connector-kafka-1.17.0.jar",
+    "file:///opt/flink/lib/flink-connector-jdbc-3.1.0-1.17.jar",
+    "file:///opt/flink/lib/postgresql-42.6.0.jar",
 ]
 
 @dataclass(frozen = True)
@@ -36,7 +35,7 @@ class KafkaConfig:
 @dataclass(frozen=True)
 class DatabaseConfig:
     driver : str = 'org.postgresql.Driver'
-    url : str = 'jdbc:postgresql://postgres:5432/arsenal_db'
+    url : str = 'jdbc:postgresql://postgres:5432/project_1'
     username : str = 'postgres'
     password : str = 'postgres'
     
@@ -47,11 +46,11 @@ class MatchLiveConfig(KafkaConfig):
     
 @dataclass(frozen=True)
 class MatchTableConfig(DatabaseConfig):
-    table_name : str = 'arsenal_live_match'
+    table_name : str = 'arsenal_match_stats'
     
 @dataclass(frozen=True)
 class MatchEventsTableConfig(DatabaseConfig):
-    table_name : str = 'live_match_events'    
+    table_name : str = 'arsenal_match_stats'    
         
 def get_execution_environment(config: StreamConfig) -> Tuple[StreamExecutionEnvironment, StreamTableEnvironment]:
     s_env = StreamExecutionEnvironment.get_execution_environment()
@@ -76,19 +75,21 @@ def get_sql_query(entity:str, type:str = 'source',
     
     config_map = {
         'arsenal_live_match': MatchLiveConfig(),
-        'live_match_events': MatchEventsTableConfig(),
-        'match_logic': MatchTableConfig()
+        'arsenal_match_stats': MatchEventsTableConfig(),
     }
     
     return template.render(asdict(config_map.get(entity)))
 
 def run_match_stream(t_env : StreamTableEnvironment,get_sql_query = get_sql_query) -> None: 
     t_env.execute_sql(get_sql_query('arsenal_live_match', 'source'))
-    t_env.execute_sql(get_sql_query('live_match_events', 'sink'))
+    t_env.execute_sql(get_sql_query('arsenal_match_stats', 'sink'))
     stmt_set = t_env.create_statement_set()
-    stmt_set.add_insert_sql(get_sql_query('match_logic', 'process'))
+    stmt_set.add_insert_sql(get_sql_query('arsenal_live_match', 'process'))
     checkout_job = stmt_set.execute()
-    print (f'Job Result: {checkout_job.get_job_client().get().get_job_status().to_string()}')   
+    job_client = checkout_job.get_job_client()
+    print(f'Job submitted successfully!')
+    print(f'Job ID: {job_client.get_job_id()}')
+    print(f'Job Status: {job_client.get_job_status()}')   
     
     
 if __name__ == '__main__':

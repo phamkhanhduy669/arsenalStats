@@ -1,0 +1,3 @@
+SHELL=/bin/bash
+PYTHONPATH=/app/batching/code
+0 0 * * * root . /etc/environment; /usr/local/bin/python -m arsPRJ.data_etl >> /var/log/cron.log 2>&1

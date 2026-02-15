@@ -42,3 +42,32 @@ CREATE TABLE IF NOT EXISTS arsenal_stats.match (
     status VARCHAR(20) DEFAULT 'notstarted',
     updated_utc TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE IF NOT EXISTS arsenal_stats.arsenal_match_stats (
+    match_id INT,
+    home_possession INT,
+    away_possession INT,
+    home_bigChanceCreated INT,
+    away_bigChanceCreated INT,
+    home_totalShots INT,
+    away_totalShots INT,
+    home_shotsOnTarget INT,
+    away_shotsOnTarget INT,
+    home_goalkeeperSaves INT,
+    away_goalkeeperSaves INT,
+    home_passes INT,
+    away_passes INT,
+    home_corners INT,
+    away_corners INT,
+    home_fouls INT,
+    away_fouls INT,
+    home_totalTackles INT,
+    away_totalTackles INT,
+    home_freeKicks INT,
+    away_freeKicks INT,
+    home_yellowCards INT,
+    away_yellowCards INT,
+    home_redCards INT,
+    away_redCards INT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (match_id, updated_at)
+);

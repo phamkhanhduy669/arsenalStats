@@ -2,24 +2,20 @@ FROM flink:1.17.0
 
 RUN apt-get update -y && \
     apt-get install -y python3 python3-pip python3-dev && \
-    ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -sf /usr/bin/python3 /usr/bin/python && \
+    ln -sf /usr/bin/pip3 /usr/bin/pip && \
     rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
-
-RUN wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/1.17.0/flink-sql-connector-kafka-1.17.0.jar
-
-# JDBC Connector
-RUN wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc/3.1.0-1.17/flink-connector-jdbc-3.1.0-1.17.jar
-
-# Postgres Driver
-RUN wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar
+# Download connectors
+RUN wget -P /opt/flink/lib https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/1.17.0/flink-sql-connector-kafka-1.17.0.jar && \
+    wget -P /opt/flink/lib https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc/3.1.0-1.17/flink-connector-jdbc-3.1.0-1.17.jar && \
+    wget -P /opt/flink/lib https://jdbc.postgresql.org/download/postgresql-42.6.0.jar
 
 COPY requirements.txt /opt/flink
 RUN pip install --no-cache-dir -r /opt/flink/requirements.txt
 
 WORKDIR /opt/flink/usrlib
 
-COPY code ./code/
+COPY streaming/code ./code/
 
 CMD ["python", "/opt/flink/code/match_stream.py"]

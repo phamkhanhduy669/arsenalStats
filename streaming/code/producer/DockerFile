@@ -6,14 +6,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY streaming/code/producer/requirements.txt ./requirements.txt
 
-RUN pip install --no-cache-dir -r 'requirements.txt'
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY batching/code /app/batching/code
 
-COPY streaming/producer/match_producer.py /app/
+COPY streaming/code/producer/ /app/
 
-ENV PYTHONPATH=${PYTHONPATH}:/app/batching/code
+ENV PYTHONPATH=/app/batching/code
 
 CMD ["python", "match_producer.py"]
