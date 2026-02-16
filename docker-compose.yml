@@ -45,6 +45,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./postgesql/create_table.sql:/docker-entrypoint-initdb.d/01-create_table.sql
+      - ./postgesql/trigger.sql:/docker-entrypoint-initdb.d/02-trigger.sql
     networks:
       - arsenal-net
 
@@ -92,7 +94,12 @@ services:
       - taskmanager
       - kafka
       - postgres
-    command: ["bash", "-c", "sleep 15 && python /opt/flink/usrlib/code/match_stream.py"]
+    command:
+      [
+        "bash",
+        "-c",
+        "sleep 15 && python /opt/flink/usrlib/code/match_stream.py",
+      ]
     networks:
       - arsenal-net
     restart: "no"

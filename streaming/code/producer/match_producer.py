@@ -1,7 +1,7 @@
 import requests, os, json, logging
-import time as time_module
+import time
 from dotenv import load_dotenv
-from datetime import datetime, timezone
+import datetime as dt
 from typing import Dict, Any, List
 from kafka import KafkaProducer
 from arsPRJ.utils.db_connection import WarehouseConnection
@@ -13,8 +13,8 @@ RAPIDAPI_KEY = os.getenv('RAPIDAPI_KEY')
 team_id = 42 # Arsenal's team ID in SofaScore
 
 def utc_to_datetime(utc_timestamp: int) -> str:
-    dt = datetime.fromtimestamp(utc_timestamp, tz=timezone.utc)
-    return dt.astimezone()
+    local_dt = dt.datetime.fromtimestamp(utc_timestamp, tz=dt.timezone.utc)
+    return local_dt.astimezone()
 
 def get_next_match() -> Dict[str, Any]:
     url = f"https://sofascore.p.rapidapi.com/teams/get-next-matches?teamId={team_id}&pageIndex=0"
@@ -23,8 +23,15 @@ def get_next_match() -> Dict[str, Any]:
         "X-RapidAPI-Host": "sofascore.p.rapidapi.com"
     }
     
-    response = requests.get(url, headers=headers)
-    return response.json().get('events', [])[0]
+    try:
+        response = requests.get(url, headers=headers)
+        events = response.json().get('events', [])
+        if events:
+            return events[0]
+        return None
+    except Exception as e:
+        logging.error(f"Failed to fetch next match: {e}")
+        return None
 
 def format_next_match_data(match: dict) -> dict:
     return {
@@ -78,10 +85,10 @@ def check_live_match(team_id: int) -> Dict[str, Any]:
             awayTeam_id = data.get('awayTeam', {}).get('id')
             if homeTeam_id == team_id or awayTeam_id == team_id:
                 return data
-        time_module.sleep(15)
+        time.sleep(15)
     except Exception as e:
         logging.error(f"Failed to fetch live match data: {e}")
-        time_module.sleep(15)
+        time.sleep(15)
     return None
 
 def get_kafka_producer() -> KafkaProducer:
@@ -95,7 +102,7 @@ def get_kafka_producer() -> KafkaProducer:
             logging.info("Kafka producer connected successfully.")
         except Exception as e:
             logging.error(f"Failed to connect to Kafka: {e}. Retrying in 5 seconds...")
-            time_module.sleep(5)
+            time.sleep(5)
     return producer
 
 def match_details(match_id: int) -> dict:
@@ -107,7 +114,7 @@ def match_details(match_id: int) -> dict:
     try:
         response = requests.get(url, headers=headers)
         data = response.json()
-        time_module.sleep(5)
+        time.sleep(5)
         return {
             'match_id': match_id,
             'status': data.get('event', {}).get('status', {}).get('type'),
@@ -118,7 +125,7 @@ def match_details(match_id: int) -> dict:
         }
     except Exception as e:
         logging.error(f"Failed to fetch match end data: {e}")
-        time_module.sleep(5)
+        time.sleep(5)
         
 def prase_match_statistics(statistics: list[dict], details : dict) -> dict:
     parse_data = details
@@ -169,10 +176,10 @@ def stream_macth(producer: KafkaProducer, match_id: int)-> None:
                 logging.info(f"Match ID: {match_id} has finished. Stopping stream.")
                 update_match_status_in_db(match_id, 'finished')
                 break
-            time_module.sleep(10)  # Sleep for 10 seconds
+            time.sleep(10)  # Sleep for 10 seconds
         except Exception as e:
             logging.error(f"Failed to fetch match statistics: {e}")
-            time_module.sleep(30)  # Sleep for 30
+            time.sleep(30)  # Sleep for 30
        
    
 def main():
@@ -193,26 +200,27 @@ def main():
                 logging.error(f"Could not insert/update match data: {e}")
             stream_macth(producer, match_id)
             continue
-        next_match = format_next_match_data(get_next_match())
-        if next_match:
+        next_match_data = get_next_match()
+        if next_match_data:
+            next_match = format_next_match_data(next_match_data)
             insert_match_data_to_db(**next_match)
             logging.info(f"Next match data inserted into DB: {next_match}")
             match_id = next_match.get('match_id')
             start_time = next_match.get('start_time')
-            now = datetime.now().astimezone()
+            now = dt.datetime.now().astimezone()
             wait_second = (start_time - now).total_seconds()
             wait_second -= 600
             
             if wait_second > 0:
                 logging.info(f"Waiting for {wait_second} seconds until streaming starts for match ID: {match_id}")
-                time_module.sleep(wait_second)
+                time.sleep(wait_second)
                 logging.info(f"Preparing to stream data for match ID: {match_id}")
             else:
                 logging.info(f"Match ID: {match_id} is starting soon or already started. Starting to stream immediately.")
-                time_module.sleep(60)
+                time.sleep(60)
         else:
-            logging.error("No upcoming match found")
-            time_module.sleep(7200)
+            logging.info("No upcoming match found. Retrying in 2 hours...")
+            time.sleep(7200)
 
 if __name__ == "__main__":
     main()
