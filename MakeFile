@@ -1,0 +1,88 @@
+SHELL := /bin/bash
+.DEFAULT_GOAL := help
+
+COMPOSE ?= docker compose
+COMPOSE_FILE ?= docker-compose.yml
+TF_DIR ?= terraform
+VENV ?= .venv
+
+ifeq ($(OS),Windows_NT)
+  VENV_BIN := $(VENV)/Scripts
+else
+  VENV_BIN := $(VENV)/bin
+endif
+
+PYTHON := $(VENV_BIN)/python
+PIP := $(VENV_BIN)/pip
+
+.PHONY: help venv install batch-run producer-run stream-run \
+    compose-up compose-down compose-build compose-ps compose-logs \
+    tf-init tf-plan tf-apply tf-destroy tf-fmt clean-venv
+
+help:
+    @echo "Targets:"
+    @echo "  venv            Create virtual env in $(VENV)"
+    @echo "  install         Install Python deps"
+    @echo "  batch-run       Run batching ETL"
+    @echo "  producer-run    Run streaming producer"
+    @echo "  stream-run      Run Flink stream job (local)"
+    @echo "  compose-up      docker compose up -d"
+    @echo "  compose-down    docker compose down -v"
+    @echo "  compose-build   docker compose build"
+    @echo "  compose-ps      docker compose ps"
+    @echo "  compose-logs    docker compose logs -f"
+    @echo "  tf-init         terraform init"
+    @echo "  tf-plan         terraform plan"
+    @echo "  tf-apply        terraform apply"
+    @echo "  tf-destroy      terraform destroy"
+    @echo "  tf-fmt          terraform fmt -recursive"
+    @echo "  clean-venv      remove $(VENV)"
+
+venv:
+    python -m venv $(VENV)
+
+install: venv
+    $(PIP) install --upgrade pip
+    $(PIP) install -r requirements.txt
+
+batch-run:
+    PYTHONPATH=batching/code $(PYTHON) -m arsPRJ.data_etl
+
+producer-run:
+    PYTHONPATH=batching/code $(PYTHON) streaming/code/producer/match_producer.py
+
+stream-run:
+    cd streaming && PYTHONPATH=code $(PYTHON) code/match_stream.py
+
+compose-up:
+    $(COMPOSE) -f $(COMPOSE_FILE) up -d
+
+compose-down:
+    $(COMPOSE) -f $(COMPOSE_FILE) down -v
+
+compose-build:
+    $(COMPOSE) -f $(COMPOSE_FILE) build
+
+compose-ps:
+    $(COMPOSE) -f $(COMPOSE_FILE) ps
+
+compose-logs:
+    $(COMPOSE) -f $(COMPOSE_FILE) logs -f
+
+tf-init:
+    terraform -chdir=$(TF_DIR) init
+
+tf-plan:
+    terraform -chdir=$(TF_DIR) plan
+
+tf-apply:
+    terraform -chdir=$(TF_DIR) apply
+
+tf-destroy:
+    terraform -chdir=$(TF_DIR) destroy
+
+tf-fmt:
+    terraform -chdir=$(TF_DIR) fmt -recursive
+
+clean-venv:
+    rm -rf $(VENV)

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS arsenal_stats.coach (
 );
 CREATE TABLE IF NOT EXISTS arsenal_stats.match (
     match_id INT PRIMARY KEY,
-    leauge VARCHAR(50) NOT NULL,
+    league VARCHAR(50) NOT NULL,
     round VARCHAR(50) NOT NULL,
     home_team VARCHAR(50) NOT NULL,
     away_team VARCHAR(50) NOT NULL,
