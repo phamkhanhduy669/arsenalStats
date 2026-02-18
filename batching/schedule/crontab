@@ -1,3 +1,3 @@
 SHELL=/bin/bash
 PYTHONPATH=/app/batching/code
-0 0 * * * root . /etc/environment; echo "$(date -Iseconds) cron tick" >> /var/log/cron.log; PYTHONPATH=/app/batching/code /usr/local/bin/python -m arsPRJ.data_etl >> /var/log/cron.log 2>&1
+30 * * * * . /etc/environment; echo "$(date -Iseconds) cron tick" >> /var/log/cron.log; PYTHONPATH=/app/batching/code /usr/local/bin/python -m arsPRJ.data_etl >> /var/log/cron.log 2>&1
