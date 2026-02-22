@@ -11,7 +11,7 @@ resource "kubernetes_deployment_v1" "batching" {
       metadata { labels = { app = "batching" } }
       spec {
         container {
-          image             = "arsenal-batching:local"
+          image             = "arsenal-batching:local-fixed"
           name              = "batching"
           image_pull_policy = "IfNotPresent"
 
@@ -24,6 +24,11 @@ resource "kubernetes_deployment_v1" "batching" {
           env {
             name  = "TZ"
             value = "Asia/Ho_Chi_Minh"
+          }
+
+          env {
+            name  = "PYTHONPATH"
+            value = "/app/batching/code"
           }
 
           env {

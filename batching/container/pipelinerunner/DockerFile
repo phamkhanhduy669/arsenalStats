@@ -5,10 +5,12 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y cron && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY batching/container/pipelinerunner/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY batching/code /app/batching/code
+
+ENV PYTHONPATH=/app/batching/code
 
 COPY batching/schedule/crontab /etc/cron.d/arsprj-cron
 

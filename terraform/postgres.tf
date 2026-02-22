@@ -10,26 +10,25 @@ resource "kubernetes_config_map_v1" "postgres_init_scripts" {
   }
 }
 
-resource "kubernetes_deployment_v1" "postgres" {
+resource "kubernetes_stateful_set_v1" "postgres" {
   metadata {
     name      = "postgres"
     namespace = kubernetes_namespace_v1.arsenal_stats.metadata[0].name
   }
 
   spec {
-    replicas = 1
+    service_name = "postgres"
+    replicas     = 1
+
     selector {
-      match_labels = {
-        app = "postgres"
-      }
+      match_labels = { app = "postgres" }
     }
 
     template {
       metadata {
-        labels = {
-          app = "postgres"
-        }
+        labels = { app = "postgres" }
       }
+
       spec {
         container {
           image = "postgres:15"
@@ -57,6 +56,26 @@ resource "kubernetes_deployment_v1" "postgres" {
             mount_path = "/docker-entrypoint-initdb.d"
             read_only  = true
           }
+          volume_mount {
+            name       = "postgres-data"
+            mount_path = "/var/lib/postgresql/data"
+          }
+
+          readiness_probe {
+            exec {
+              command = ["pg_isready", "-U", "postgres"]
+            }
+            initial_delay_seconds = 10
+            period_seconds        = 10
+          }
+
+          liveness_probe {
+            exec {
+              command = ["pg_isready", "-U", "postgres"]
+            }
+            initial_delay_seconds = 30
+            period_seconds        = 20
+          }
         }
 
         volume {
@@ -64,6 +83,19 @@ resource "kubernetes_deployment_v1" "postgres" {
           config_map {
             name = kubernetes_config_map_v1.postgres_init_scripts.metadata[0].name
           }
+        }
+      }
+    }
+
+    volume_claim_template {
+      metadata {
+        name = "postgres-data"
+      }
+      spec {
+        access_modes       = ["ReadWriteOnce"]
+        storage_class_name = var.storage_class
+        resources {
+          requests = { storage = "5Gi" }
         }
       }
     }
@@ -75,10 +107,11 @@ resource "kubernetes_service_v1" "postgres" {
     name      = "postgres"
     namespace = kubernetes_namespace_v1.arsenal_stats.metadata[0].name
   }
+
   spec {
-    selector = {
-      app = kubernetes_deployment_v1.postgres.spec[0].template[0].metadata[0].labels.app
-    }
+    cluster_ip = "None"
+    selector   = { app = "postgres" }
+
     port {
       port        = 5432
       target_port = 5432

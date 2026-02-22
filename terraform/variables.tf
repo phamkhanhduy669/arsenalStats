@@ -13,7 +13,7 @@ variable "postgres_password" {
   description = "Database password"
   type        = string
   sensitive   = true
-  default     = "postgres" 
+  default     = "postgres"
 }
 
 variable "postgres_user" {
@@ -24,4 +24,9 @@ variable "postgres_user" {
 variable "postgres_db" {
   type    = string
   default = "project_1"
+}
+
+variable "storage_class" {
+  type    = string
+  default = "hostpath"
 }

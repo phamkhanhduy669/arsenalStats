@@ -10,7 +10,7 @@ resource "helm_release" "prometheus_stack" {
   chart      = "kube-prometheus-stack"
   namespace  = kubernetes_namespace_v1.monitoring.metadata[0].name
   version    = "56.0.0"
-    values = [
+  values = [
     yamlencode({
       prometheus = {
         prometheusSpec = {

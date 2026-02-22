@@ -10,7 +10,7 @@ resource "kubernetes_deployment_v1" "producer" {
       metadata { labels = { app = "producer" } }
       spec {
         container {
-          image             = "arsenal-producer:local"
+          image             = "arsenal-producer:local-fixed"
           name              = "producer"
           image_pull_policy = "IfNotPresent"
 
