@@ -91,7 +91,8 @@ def get_insert_players_query() -> str:
         assists = EXCLUDED.assists,
         ycards = EXCLUDED.ycards,
         rcards = EXCLUDED.rcards,
-        transferValue = EXCLUDED.transferValue;
+        transferValue = EXCLUDED.transferValue,
+        updated_utc = CURRENT_TIMESTAMP;
     """
     
 def get_insert_coach_query() -> str:
@@ -105,7 +106,8 @@ def get_insert_coach_query() -> str:
     ON CONFLICT (id) DO UPDATE SET
         age = EXCLUDED.age,
         dateOfBirth = EXCLUDED.dateOfBirth,
-        height_cm = EXCLUDED.height_cm;
+        height_cm = EXCLUDED.height_cm,
+        updated_utc = CURRENT_TIMESTAMP;
     """
     
 def run() -> None:
