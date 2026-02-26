@@ -7,4 +7,5 @@ terraform.tfstate
 terraform.tfstate.backup
 tfplan
 terraform.tfstats.*
-terraform/terraform.tfstate.1771184773.backup
+terraform/terraform.tfstate.*
+apply.log

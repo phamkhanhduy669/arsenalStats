@@ -1,5 +1,5 @@
 import requests, os, json, logging
-import time
+import time as time_module
 from dotenv import load_dotenv
 import datetime as dt
 from typing import Dict, Any, List
@@ -85,10 +85,10 @@ def check_live_match(team_id: int) -> Dict[str, Any]:
             awayTeam_id = data.get('awayTeam', {}).get('id')
             if homeTeam_id == team_id or awayTeam_id == team_id:
                 return data
-        time.sleep(15)
+        time_module.sleep(15)
     except Exception as e:
         logging.error(f"Failed to fetch live match data: {e}")
-        time.sleep(15)
+        time_module.sleep(15)
     return None
 
 def get_kafka_producer() -> KafkaProducer:
@@ -102,7 +102,7 @@ def get_kafka_producer() -> KafkaProducer:
             logging.info("Kafka producer connected successfully.")
         except Exception as e:
             logging.error(f"Failed to connect to Kafka: {e}. Retrying in 5 seconds...")
-            time.sleep(5)
+            time_module.sleep(5)
     return producer
 
 def match_details(match_id: int) -> dict:
@@ -114,7 +114,7 @@ def match_details(match_id: int) -> dict:
     try:
         response = requests.get(url, headers=headers)
         data = response.json()
-        time.sleep(5)
+        time_module.sleep(5)
         return {
             'match_id': match_id,
             'status': data.get('event', {}).get('status', {}).get('type'),
@@ -125,7 +125,7 @@ def match_details(match_id: int) -> dict:
         }
     except Exception as e:
         logging.error(f"Failed to fetch match end data: {e}")
-        time.sleep(5)
+        time_module.sleep(5)
         
 def prase_match_statistics(statistics: list[dict], details : dict) -> dict:
     parse_data = details
@@ -176,10 +176,10 @@ def stream_macth(producer: KafkaProducer, match_id: int)-> None:
                 logging.info(f"Match ID: {match_id} has finished. Stopping stream.")
                 update_match_status_in_db(match_id, 'finished')
                 break
-            time.sleep(10)  # Sleep for 10 seconds
+            time_module.sleep(10)  # Sleep for 10 seconds
         except Exception as e:
             logging.error(f"Failed to fetch match statistics: {e}")
-            time.sleep(30)  # Sleep for 30
+            time_module.sleep(30)  # Sleep for 30
        
    
 def main():
@@ -213,14 +213,14 @@ def main():
             
             if wait_second > 0:
                 logging.info(f"Waiting for {wait_second} seconds until streaming starts for match ID: {match_id}")
-                time.sleep(wait_second)
+                time_module.sleep(wait_second)
                 logging.info(f"Preparing to stream data for match ID: {match_id}")
             else:
                 logging.info(f"Match ID: {match_id} is starting soon or already started. Starting to stream immediately.")
-                time.sleep(60)
+                time_module.sleep(60)
         else:
             logging.info("No upcoming match found. Retrying in 2 hours...")
-            time.sleep(7200)
+            time_module.sleep(7200)
 
 if __name__ == "__main__":
     main()
